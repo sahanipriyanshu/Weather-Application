@@ -11,7 +11,7 @@ const Header = () => {
         </h1>
       </div>
       <p className="text-white/80 text-lg md:text-xl font-light">
-        Co-presented by Nishad Samaj
+        Powered by OpenWeather API
       </p>
     </header>
   );
