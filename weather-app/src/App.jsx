@@ -12,7 +12,7 @@ function App() {
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [city, setCity] = useState('');
+  // Removed unused city state
   const [backgroundClass, setBackgroundClass] = useState('bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600');
 
   const getWeatherBackground = (weather, isNight = false) => {
@@ -54,7 +54,7 @@ function App() {
     try {
       // Fetch current weather
       const currentWeatherResponse = await fetch(
-        https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`
       );
 
       if (!currentWeatherResponse.ok) {
@@ -65,7 +65,7 @@ function App() {
 
       // Fetch 5-day forecast
       const forecastResponse = await fetch(
-        https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric
+        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric`
       );
 
       const forecast = await forecastResponse.json();
@@ -100,17 +100,21 @@ function App() {
   };
 
   const handleSearch = (cityName) => {
-    setCity(cityName);
     fetchWeatherData(cityName);
   };
 
   // Load default city on mount
   useEffect(() => {
-    fetchWeatherData('London');
+    // Define fetchWeatherData inside useEffect to avoid missing dependency warning
+    const fetchDefaultCity = async () => {
+      await fetchWeatherData('London');
+    };
+    fetchDefaultCity();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className={min-h-screen transition-all duration-1000 ease-in-out ${backgroundClass}}>
+    <div className={`min-h-screen transition-all duration-1000 ease-in-out ${backgroundClass}`}>
       <div className="min-h-screen backdrop-blur-sm bg-black/10">
         <div className="container mx-auto px-4 py-8">
           <Header />
